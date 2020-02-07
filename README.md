@@ -1,4 +1,4 @@
-# SocketReading
+# Socket Reading
 
 Reading packet from speficied socket port: This will read the packet from UDP port 4000 Continousely 
 
@@ -59,4 +59,30 @@ Creating new server to emit the data
 	log.Println("Serving at localhost:4000...")
 	log.Fatal(http.ListenAndServe(":4000", nil))
  
-<
+# Connecting MongoDB with GOLang
+
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+
+	err = client.Ping(context.TODO(), nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected to MongoDB!")
+
+	collection := client.Database("GoDB").Collection("datapoint")
+	record := DataPoint{time.Now().Format("2006.01.02 15:04:05"), res}
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	insertResult, err := collection.InsertOne(context.TODO(), record)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
